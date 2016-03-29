@@ -178,7 +178,168 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Summarize-the-goal-of-the-this-project-and-how-machine-learning-is-useful-in-trying-to-accomplish-it.">Summarize the goal of the this project and how machine learning is useful in trying to accomplish it.<a class="anchor-link" href="#Summarize-the-goal-of-the-this-project-and-how-machine-learning-is-useful-in-trying-to-accomplish-it.">&#182;</a></h2><p>The goal of the this project is to develop a model that is capable of identifying people of interest in relation to the Enron Scandal using only the financial and e-mail data.  Machine Learning is useful in accomplishing this task since there are numerous Classifier algorithms that can be built to accomplish this task.  Classification algorithms can be used to determine categorical outcomes based on defining decision surfaces for the various outcomes.  These decision surfaces are defined by training the classifier on some past data so that the model can be tuned to accurately predict future unseen data points.</p>
-<p>Defining people of interest is a good fit for a supervised classification algorithm.  When looking at the dataset given to me, I noticed that there were 145 people in my dataset.  Initially I decided to visualize the data by plotting various features to see if there were any strong correlations with people of interest and "non" people of interest.  I found that there were a few features that had a small number of entries(deferral payments, deferred_income) and some that had pretty good predictive power(exercised_stock_options).  There was one outlier that I found which was the entry for TOTAL which I popped out of the dataset dictionary using the <strong>pop()</strong> function.  The TOTAL entry can be found as an outlier when visualizing the salary vs. bonus plot.</p>
+<p>Defining people of interest is a good fit for a supervised classification algorithm.  When looking at the dataset given to me, I noticed that there were 145 people in my dataset.  Out of the 145 people, only 18 are labeled as people of interest.  In the dataset, there are 19 features given.  Below is a table of number of empty entries in the financial data:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="k">html</span>
+&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt;Feature name&lt;/th&gt;
+&lt;th&gt;# of empty values&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;salary&lt;/td&gt;
+&lt;td&gt;51&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;deferral_payments&lt;/td&gt;
+&lt;td&gt;107&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;total_payments&lt;/td&gt;
+&lt;td&gt;21&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;loan_advances&lt;/td&gt;
+&lt;td&gt;142&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;bonus&lt;/td&gt;
+&lt;td&gt;64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;restricted_stock_deferred&lt;/td&gt;
+&lt;td&gt;128&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;deferred_income&lt;/td&gt;
+&lt;td&gt;97&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;total_stock_value&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;expenses&lt;/td&gt;
+&lt;td&gt;51&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;exercised_stock_options&lt;/td&gt;
+&lt;td&gt;44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;other&lt;/td&gt;
+&lt;td&gt;53&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;long_term_incentive&lt;/td&gt;
+&lt;td&gt;80&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;restricted_stock&lt;/td&gt;
+&lt;td&gt;36&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;director_fees&lt;/td&gt;
+&lt;td&gt;129&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+<div class="output_html rendered_html output_subarea ">
+<table>
+<tr>
+<th>Feature name</th>
+<th># of empty values</th>
+</tr>
+<tr>
+<td>salary</td>
+<td>51</td>
+</tr>
+<tr>
+<td>deferral_payments</td>
+<td>107</td>
+</tr>
+<tr>
+<td>total_payments</td>
+<td>21</td>
+</tr>
+<tr>
+<td>loan_advances</td>
+<td>142</td>
+</tr>
+<tr>
+<td>bonus</td>
+<td>64</td>
+</tr>
+<tr>
+<td>restricted_stock_deferred</td>
+<td>128</td>
+</tr>
+<tr>
+<td>deferred_income</td>
+<td>97</td>
+</tr>
+<tr>
+<td>total_stock_value</td>
+<td>20</td>
+</tr>
+<tr>
+<td>expenses</td>
+<td>51</td>
+</tr>
+<tr>
+<td>exercised_stock_options</td>
+<td>44</td>
+</tr>
+<tr>
+<td>other</td>
+<td>53</td>
+</tr>
+<tr>
+<td>long_term_incentive</td>
+<td>80</td>
+</tr>
+<tr>
+<td>restricted_stock</td>
+<td>36</td>
+</tr>
+<tr>
+<td>director_fees</td>
+<td>129</td>
+</tr>
+</table
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Initially I decided to visualize the data by plotting various features to see if there were any strong correlations with people of interest and "non" people of interest.  I found that there were a few features that had a small number of entries(deferral payments, deferred_income) and some that had pretty good predictive power(exercised_stock_options).  There was one outlier that I found which was the entry for TOTAL which I popped out of the dataset dictionary using the <strong>pop()</strong> function.  The TOTAL entry can be found as an outlier when visualizing the salary vs. bonus plot.</p>
 <h2 id="What-features-did-you-end-of-using-in-your-POI-identifier-and-what-selection-process-did-you-use-to-pick-them?">What features did you end of using in your POI identifier and what selection process did you use to pick them?<a class="anchor-link" href="#What-features-did-you-end-of-using-in-your-POI-identifier-and-what-selection-process-did-you-use-to-pick-them?">&#182;</a></h2><p>The features that I ended up using are the following:</p>
 <ul>
 <li>stock_pay_ratio</li>
@@ -199,7 +360,137 @@ div#notebook {
 <li>total_stock_value - 17.3184</li>
 </ul>
 <h2 id="What-algorithm-did-you-end-up-using?-What-other-ones-did-you-try?">What algorithm did you end up using? What other ones did you try?<a class="anchor-link" href="#What-algorithm-did-you-end-up-using?-What-other-ones-did-you-try?">&#182;</a></h2><p>The algorithm that I ended up using was the <strong>Decision Tree Classifier</strong>.  The Decision Tree algorithm gave me the best precision and recall scores on all the different classifier algorithms that I expermimented with.  I intially started with the <strong>Gaussian Naive Bayes classifier</strong> to see how it performed.  When running this classifier on the large dataset ran by tester.py, I got excellent recall scores(0.94), but bad precision scores(0.24).  The other algorithm that I tried in which I thought would give me much better performance was <strong>RandomForest Classifier</strong>.  I thought this would do better than a single Decision Tree since it uses an ensemble of Decision trees.  It did indeed give me excellent precision scores (0.54) but bad recall scores(0.17).  When using the Decision Tree Classifier, I got on average an precision score of 0.33 and a recall score of 0.34.</p>
-<h2 id="What-does-it-mean-to-tune-the-parameters-of-an-algorithm,-and-what-can-happen-if-you-don't-do-this-well?--How-did-you-tune-the-parameters-of-your-algorithm?">What does it mean to tune the parameters of an algorithm, and what can happen if you don't do this well?  How did you tune the parameters of your algorithm?<a class="anchor-link" href="#What-does-it-mean-to-tune-the-parameters-of-an-algorithm,-and-what-can-happen-if-you-don't-do-this-well?--How-did-you-tune-the-parameters-of-your-algorithm?">&#182;</a></h2><p>To tune the parameters of an algorithm means to fit your model with a variable number of parameter values for a number of parameters, and get the set of parameters that fits your model best to the training data.  I tuned my data using the <strong>GridSearchCV</strong> function. I ran the GridSearchCV function on both my RandomForest Classifier and my DecisionTree Classifier.  This was pretty easy since they both share a good amount of parameters.  What I found is that it is probably best to choose a <strong>randomState</strong> value for the <em>test_train_split</em> function because the GridSearchCV function will generate a different "best estimator" based on the different training/test data.  I also noticed that when passing the output generated by the GridSearchCV function into the tester.py, the code run takes a long time to complete (I'm not sure that it even finishes because I stopped it).  To alleviate this issue, I would print out the <em>best_estimator</em> given by GridSearchCV and use those parameters as my classifer.</p>
+<h2 id="What-does-it-mean-to-tune-the-parameters-of-an-algorithm,-and-what-can-happen-if-you-don't-do-this-well?--How-did-you-tune-the-parameters-of-your-algorithm?">What does it mean to tune the parameters of an algorithm, and what can happen if you don't do this well?  How did you tune the parameters of your algorithm?<a class="anchor-link" href="#What-does-it-mean-to-tune-the-parameters-of-an-algorithm,-and-what-can-happen-if-you-don't-do-this-well?--How-did-you-tune-the-parameters-of-your-algorithm?">&#182;</a></h2><p>To tune the parameters of an algorithm means to fit your model with a variable number of parameter values for a number of parameters, and get the set of parameters that fits your model best to the training data.  I tuned my data using the <strong>GridSearchCV</strong> function. I ran the GridSearchCV function on both my RandomForest Classifier and my DecisionTree Classifier.  This was pretty easy since they both share a good amount of parameters.  What I found is that it is probably best to choose a <strong>randomState</strong> value for the <em>test_train_split</em> function because the GridSearchCV function will generate a different "best estimator" based on the different training/test data.  I also noticed that when passing the output generated by the GridSearchCV function into the tester.py, the code run takes a long time to complete (I'm not sure that it even finishes because I stopped it).  To alleviate this issue, I would print out the <em>best_estimator</em> given by GridSearchCV and use those parameters as my classifer. Below is a subset of parameters tuned with their mean and std. deviations given by the <strong>grid<em>scores</em></strong> function.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="o">%%</span><span class="k">html</span>
+&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt;Parameters&lt;/th&gt;
+&lt;th&gt;mean&lt;/th&gt;
+&lt;th&gt;std. dev&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt; &#39;max_features&#39;: &#39;auto&#39;, &#39;min_samples_split&#39;: 1, &#39;criterion&#39;: &#39;gini&#39;&lt;/td&gt;
+&lt;td&gt; 0.86139&lt;/td&gt;
+&lt;td&gt;0.03862 &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&#39;max_features&#39;: &#39;auto&#39;, &#39;min_samples_split&#39;: 5, &#39;criterion&#39;: &#39;gini&#39; &lt;/td&gt;
+&lt;td&gt;0.79208&lt;/td&gt;
+&lt;td&gt;0.04039&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&#39;max_features&#39;: &#39;auto&#39;, &#39;min_samples_split&#39;: 10, &#39;criterion&#39;: &#39;gini&#39; &lt;/td&gt;
+&lt;td&gt;0.84158 &lt;/td&gt;
+&lt;td&gt;0.01294&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&#39;max_features&#39;: &#39;auto&#39;, &#39;min_samples_split&#39;: 15, &#39;criterion&#39;: &#39;gini&#39; &lt;/td&gt;
+&lt;td&gt;0.81188 &lt;/td&gt;
+&lt;td&gt;0.01279 &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&#39;max_features&#39;: &#39;log2&#39;, &#39;min_samples_split&#39;: 1, &#39;criterion&#39;: &#39;entropy&#39; &lt;/td&gt;
+&lt;td&gt;0.79208 &lt;/td&gt;
+&lt;td&gt;0.04622 &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&#39;max_features&#39;: &#39;log2&#39;, &#39;min_samples_split&#39;: 5, &#39;criterion&#39;: &#39;entropy&#39; &lt;/td&gt;
+&lt;td&gt;0.81188 &lt;/td&gt;
+&lt;td&gt;0.03512 &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&#39;max_features&#39;: &#39;log2&#39;, &#39;min_samples_split&#39;: 10, &#39;criterion&#39;: &#39;entropy&#39; &lt;/td&gt;
+&lt;td&gt;0.80198 &lt;/td&gt;
+&lt;td&gt;0.03470 &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&#39;max_features&#39;: &#39;log2&#39;, &#39;min_samples_split&#39;: 15, &#39;criterion&#39;: &#39;entropy&#39; &lt;/td&gt;
+&lt;td&gt;0.84158 &lt;/td&gt;
+&lt;td&gt;0.03543 &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+<div class="output_html rendered_html output_subarea ">
+<table>
+<tr>
+<th>Parameters</th>
+<th>mean</th>
+<th>std. dev</th>
+</tr>
+<tr>
+<td> 'max_features': 'auto', 'min_samples_split': 1, 'criterion': 'gini'</td>
+<td> 0.86139</td>
+<td>0.03862 </td>
+</tr>
+<tr>
+<td>'max_features': 'auto', 'min_samples_split': 5, 'criterion': 'gini' </td>
+<td>0.79208</td>
+<td>0.04039</td>
+</tr>
+<tr>
+<td>'max_features': 'auto', 'min_samples_split': 10, 'criterion': 'gini' </td>
+<td>0.84158 </td>
+<td>0.01294</td>
+</tr>
+<tr>
+<td>'max_features': 'auto', 'min_samples_split': 15, 'criterion': 'gini' </td>
+<td>0.81188 </td>
+<td>0.01279 </td>
+</tr>
+<tr>
+<td>'max_features': 'log2', 'min_samples_split': 1, 'criterion': 'entropy' </td>
+<td>0.79208 </td>
+<td>0.04622 </td>
+</tr>
+<tr>
+<td>'max_features': 'log2', 'min_samples_split': 5, 'criterion': 'entropy' </td>
+<td>0.81188 </td>
+<td>0.03512 </td>
+</tr>
+<tr>
+<td>'max_features': 'log2', 'min_samples_split': 10, 'criterion': 'entropy' </td>
+<td>0.80198 </td>
+<td>0.03470 </td>
+</tr>
+<tr>
+<td>'max_features': 'log2', 'min_samples_split': 15, 'criterion': 'entropy' </td>
+<td>0.84158 </td>
+<td>0.03543 </td>
+</tr>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="What-is-validation,-and-what's-a-classic-mistake-you-can-make-if-you-do-it-wrong?--How-did-you-validate-your-analysis?">What is validation, and what's a classic mistake you can make if you do it wrong?  How did you validate your analysis?<a class="anchor-link" href="#What-is-validation,-and-what's-a-classic-mistake-you-can-make-if-you-do-it-wrong?--How-did-you-validate-your-analysis?">&#182;</a></h2><p>Validation is the concept of checking the performance and accuracy of your machine learning model by running some test data against it.  The classic mistake that you can make is to have a high-biased algorithm (not generalized enough to have good predictive power) or to have a high variance algorithm(Too generalized to have good predictive power).  If your training data and testing data is not split correctly, this can generate either of these scenarios.  Thus it may be necessary to test train your data on mulitple folds of the dataset using the <strong>K-fold</strong> cross validation technique.  I validated my analysis by using the <strong>test_train_split</strong> function to split my data into a 70/30 split and calculating the accuracy_score, precision_score and recall_score on my testing data.  As these metrics improved, I felt more confident about the predictive accuracy it would have on the larger dataset.  I also used the GridSearchCV function to determine which configuration was best for my decision tree classifier.</p>
 <h2 id="Give-at-least-2-evaluation-metrics-and-your-average-performance-for-each-of-them.--Explain-an-interpretation-of-your-metrics-that-says-something-human-understable-about-your-algorithm's-performance.">Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understable about your algorithm's performance.<a class="anchor-link" href="#Give-at-least-2-evaluation-metrics-and-your-average-performance-for-each-of-them.--Explain-an-interpretation-of-your-metrics-that-says-something-human-understable-about-your-algorithm's-performance.">&#182;</a></h2><p>My Decision Tree Classifier had the following scores on average on the large test dataset ran by tester.py:</p>
 <ul>

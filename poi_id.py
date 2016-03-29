@@ -68,16 +68,26 @@ with open("final_project_dataset.pkl", "r") as data_file:
 ### Task 2: Remove outliers
 data_dict.pop("TOTAL",0)
 
+num_pois = 0
+
+nan_count = [0] * len(x_labels)
+for key in data_dict.keys():
+    for i in range(len(x_labels)):
+        if data_dict[key][x_labels[i]] == 'NaN':
+            nan_count[i] += 1
+            
+print "Num of NaNs:", zip(nan_count,x_labels)
 
 ### Task 3: Create new feature(s)
 for key in data_dict.keys():
+    if data_dict[key]['poi'] == 1:
+        num_pois += 1
+        
     if data_dict[key]['director_fees'] == 'NaN':
         data_dict[key]['director_fees'] = 1
     if data_dict[key]['expenses'] == 'NaN':
         data_dict[key]['expenses'] = 1
     data_dict[key]['dir_exp_ratio'] = (float(data_dict[key]['director_fees']) / float(data_dict[key]['expenses'])) + 1
-    
-  
     
     if data_dict[key]['restricted_stock_deferred'] == 'NaN':
         data_dict[key]['restricted_stock_deferred_empty'] = 0.
@@ -88,6 +98,11 @@ for key in data_dict.keys():
     else:
         data_dict[key]['stock_pay_ratio'] = -1.
 
+print "num of pois:", num_pois
+print "num of features:", len(x_labels) + len(x_labels_e)
+
+
+        
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
 
@@ -169,10 +184,13 @@ clf = DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None
             random_state=None, splitter='best')
 '''
 #clf = DecisionTreeClassifier()
+
 clf = DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
             max_features='log2', max_leaf_nodes=None, min_samples_leaf=1,
             min_samples_split=1, min_weight_fraction_leaf=0.0,
             random_state=None, splitter='best')
+
+            
 #print clf
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
@@ -186,9 +204,13 @@ clf = DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None
 
 
 clf.fit(features_sel,labels_train)
+'''
+import pprint as pp
 
-#print clf.best_estimator_
+pp.pprint(clf.grid_scores_)
 
+print clf.best_estimator_
+'''
 
 pred = clf.predict(features_test_sel)
 
